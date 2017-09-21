@@ -67,6 +67,11 @@ int main(int argc, char **argv)
             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
+           MPI_SEND(buf,1,MPI_CHAR,i+1,i,MPI_COMM_WORLD);
+
+
+
+
         } else if (world_rank == (i+1) % world_size) {
 
             /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -76,6 +81,9 @@ int main(int argc, char **argv)
 
             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+
+
+           MPI_REC(buf,1,MPI_CHAR,i,i,MPI_COMM_WORLD,MPI_STATUS_IGNORE);
 
             garble(buf);
             printf("MPI rank %d received message: %s\n", world_rank, buf);
