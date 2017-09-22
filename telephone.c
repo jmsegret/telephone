@@ -56,6 +56,7 @@ int main(int argc, char **argv)
 
     // Send and Receive Loop
     int i;
+    int master;
     for (i = 0; i < world_size; i++) {
         if (world_rank == i) {
 
@@ -67,7 +68,8 @@ int main(int argc, char **argv)
             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
-           MPI_SEND(buf,1,MPI_CHAR,i+1,i,MPI_COMM_WORLD);
+		master= (i+1) % world_size ;
+           MPI_Send(buf,len,MPI_CHAR,master,0,MPI_COMM_WORLD);
 
 
 
@@ -83,7 +85,7 @@ int main(int argc, char **argv)
             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 
-           MPI_REC(buf,1,MPI_CHAR,i,i,MPI_COMM_WORLD,MPI_STATUS_IGNORE);
+           MPI_Recv(buf,len,MPI_CHAR,i,0,MPI_COMM_WORLD,MPI_STATUS_IGNORE);
 
             garble(buf);
             printf("MPI rank %d received message: %s\n", world_rank, buf);
